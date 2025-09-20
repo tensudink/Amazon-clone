@@ -5,6 +5,7 @@ import styles from "./Product.module.css";
 
 function Product() {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     axios
@@ -12,19 +13,25 @@ function Product() {
       .then((res) => {
         // console.log(res.data.data);
         setProducts(res.data);
+        setIsLoading(false)
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false)
       });
   }, []);
 
   return (
-    <section className={styles.productsContainer}>
-      {products.map((singleProduct) => (
-        <ProductCard product={singleProduct} data={singleProduct} />
-      ))}
-  
-    </section>
+    <>
+    {
+     isLoading?(<Loader/>) : (<section className={styles.productsContainer}>
+      {products.map((singleProduct, index) => {
+       return <ProductCard key={index} product={singleProduct} data={singleProduct.id} />
+      })
+    }
+    </section>)
+}
+    </>
   );
 }
 
