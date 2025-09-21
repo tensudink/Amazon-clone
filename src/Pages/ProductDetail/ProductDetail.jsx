@@ -10,12 +10,13 @@ import Loader from '../../Components/Loader/Loader';
 function ProductDetail() {
   const { productId } = useParams()
   const [product, setProduct] = useState(null);
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading,setIsLoading]=useState(false);
   useEffect(() => {
     setIsLoading(true)
     axios
       .get(`${productUrl}/Products/${productId}`)
       .then((res) => {
+      // console.log(res.data);
       setProduct(res.data);
       setIsLoading(false)
       })
@@ -24,13 +25,15 @@ function ProductDetail() {
         setIsLoading(false)
       })
   }, []);
-
+  // console.log(product);
   return (
     <LayOut>
-      {isLoading?(<Loader/>): product ? (<ProductCard
+      {isLoading?(<Loader/>): product?(<ProductCard
         product={product}
         flex={true}
-    renderDesc={true}  />): (<Loader/>)}
+    renderDesc={true}
+    renderAdd={true} 
+    />):( <div>No product found.</div>)}
       
     </LayOut>
   );
