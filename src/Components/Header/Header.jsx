@@ -42,12 +42,15 @@ const Header= () =>{
 			</div>
 			{/* right side link */}
 			<div className={classes.order_container}>
-             <Link to ="" className={classes.language}>
-				<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png" alt="" />
-				<select name="" id="">
-				<option value="">EN</option>	
-				</select>
-				</Link>
+              <div className={classes.language}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/d/de/Flag_of_the_United_States.png"
+            alt="US Flag"
+          />
+          <select>
+            <option value="">EN</option>
+          </select>
+        </div>
 			 {/* three componenets */}
 			 <Link to="/auth" > 
 				<p>Sign In</p>

@@ -11,9 +11,9 @@ import { IoIosArrowUp } from "react-icons/io";
  
 function Cart() {
   const [{ basket, user }, dispatch] = useContext(DataContext);
-const total= basket.reduce((amount, item)=>{
-return amount + (item?.price ?? 0);
-},0)
+ const total = basket.reduce((amount, item) => {
+    return amount + item.price * item.amount;
+  }, 0);
 
 const increment = (item) => {
   console.log(item);
@@ -36,7 +36,7 @@ const decrement =(id)=>{
           <h3>Your Shopping Basket</h3>
           <hr />
           {basket?.length === 0?(
-            <p>Oops! No items in your cart.</p>
+            <p>Your Amazon Cart is empty</p>
           ):(
             basket?.map((item, index) => (
               <section className ={classes.cart_product}>              
@@ -62,11 +62,11 @@ const decrement =(id)=>{
           )
           }
         </div>
-        {basket?.length !==0&&(
+        {basket?.length !== 0 &&(
         <div className ={classes.subtotal}> 
 <div>
   <p>Subtotal({basket?.length} items)</p>
-  <CurrencyFormat amount = {total}/>
+  <CurrencyFormat amount={total}/>
 </div>
 <span>
   <input type= "checkbox" />
