@@ -49,11 +49,12 @@ import React, { useContext } from 'react';
         <div>
           <CurrencyFormat amount={price} />
         </div>
-
-        renderAdd && 
+        {
+        renderAdd &&
         <button className={styles.button} onClick={addToCart}>
           add to Cart
         </button>
+ }
         
       </div>
     </section>
