@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import styles from './ProductDetail.module.css'
 import LayOut from '../../Components/LayOut/LayOut'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';

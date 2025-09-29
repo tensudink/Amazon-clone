@@ -1,6 +1,6 @@
 import CategoryInfos  from "./CategoryInfos";
 import CategoryCard from "./CategoryCard";
-import classes from "./category.module.css";
+import classes from "./Category.module.css";
 
 function Category() {
   return (
