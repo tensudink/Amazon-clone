@@ -1,77 +1,99 @@
-import React, {useContext} from 'react'
-import classes from './Header.module.css';
-import {SlLocationPin} from 'react-icons/sl';
-import {BsSearch} from  'react-icons/bs';
-import LowerHeader from './LowerHeader';
-import {BiCart} from 'react-icons/bi';
-import { Link} from 'react-router-dom';
-import { DataContext } from '../DataProvider/DataProvider';
+import React, { useContext } from "react";
+import classes from "./Header.module.css";
+import { SlLocationPin } from "react-icons/sl";
+import { BsSearch } from "react-icons/bs";
+import LowerHeader from "./LowerHeader";
+import { BiCart } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import { DataContext } from "../DataProvider/DataProvider";
+import { auth } from "../../Utility/firebase";
+import { useNavigate } from "react-router-dom";
 
-const Header= () =>{
+const Header = () => {
+  const [{ user, basket }, dispatch] = useContext(DataContext);
+  const navigate = useNavigate();
+  const totalItem = basket?.reduce((amount, item) => {
+    return amount + (item?.amount ?? 0);
+  }, 0);
 
-	const [{basket},dispatch]=useContext(DataContext)
-	const totalItem = basket?.reduce((amount,item)=>{
-		return amount + (item?.amount ?? 0)
-	},0)
+  const handleSignOut = async () => {
+    await auth.signOut();
+    navigate("/auth"); // or whatever your login route is
+  };
   return (
-	<section className={classes.fixed}>
-	<section>
-			<div className={classes.header_container}>
-				{/* logo */}
-				<div className={classes.logo_container}>
-				<Link to ="/">
-				<img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazon logo" />	
-				</Link>
-				<div className={classes.delivery}>
-                <span>
-					<SlLocationPin/>
-					</span>
-					<div>
-						<p>Delivered to</p>
-						<span>USA</span>
-					</div>
-			</div>
-			</div>
-				{/* Search bar */}
-				<div className={classes.search}>
-				<select name="" id="">
-					<option value ="">All</option> 
-				</select>
-				<input type="text"/>
-				<BsSearch size={25}/>
-			</div>
-			{/* right side link */}
-			<div className={classes.order_container}>
-              <div className={classes.language}>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/de/Flag_of_the_United_States.png"
-            alt="US Flag"
-          />
-          <select>
-            <option value="">EN</option>
-          </select>
+    <section className={classes.fixed}>
+      <section>
+        <div className={classes.header_container}>
+          {/* logo */}
+          <div className={classes.logo_container}>
+            <Link to="/">
+              <img
+                src="https://pngimg.com/uploads/amazon/amazon_PNG11.png"
+                alt="amazon logo"
+              />
+            </Link>
+            <div className={classes.delivery}>
+              <span>
+                <SlLocationPin />
+              </span>
+              <div>
+                <p>Delivered to</p>
+                <span>USA</span>
+              </div>
+            </div>
+          </div>
+          {/* Search bar */}
+          <div className={classes.search}>
+            <select name="" id="">
+              <option value="">All</option>
+            </select>
+            <input type="text" />
+            <BsSearch size={38} />
+          </div>
+          {/* right side link */}
+          <div className={classes.order_container}>
+            <div className={classes.language}>
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/d/de/Flag_of_the_United_States.png"
+                alt="US Flag"
+              />
+              <select>
+                <option value="">EN</option>
+              </select>
+            </div>
+            {/* three componenets */}
+            <Link>
+              {user ? (
+                <>
+                  <p>Hello {user?.email?.split("@")[0]}</p>
+                  <span onClick={handleSignOut}>Sign Out</span>
+                </>
+              ) : (
+                <Link to="/auth">
+                  <div>
+                    <p>Hello, Sign In</p>
+                    <span>Account & Lists</span>
+                  </div>
+                </Link>
+              )}
+            </Link>
+
+            {/* Orders */}
+            <Link to="/orders">
+              <p>returns</p>
+              <span>& Orders</span>
+            </Link>
+            {/* cart */}
+            <Link to="/cart" className={classes.cart}>
+              <BiCart size={35} />
+              <span>{totalItem}</span>
+            </Link>
+          </div>
         </div>
-			 {/* three componenets */}
-			 <Link to="/auth" > 
-				<p>Sign In</p>
-				<span>Account & Lists </span>
-			 </Link>
-			 {/* Orders */}
-<Link to ="/orders">
-	<p>returns</p>
-	<span>& Orders</span>
-</Link>
- {/* cart */}
- <Link to ="/Cart" className={classes.cart}>
-	<BiCart size= {35}/>
-	<span>{totalItem}</span>
-	</Link>
-		</div>
-		</div>
-		</section>
-	<LowerHeader/>
-	</section>
- );
+      </section>
+      <LowerHeader />
+    </section>
+  );
 };
 
 export default Header;
